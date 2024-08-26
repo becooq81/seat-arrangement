@@ -34,9 +34,9 @@ function populateInputs() {
 function resetInputs() {
     document.getElementById('inputContainer').innerHTML = `
         <div class="pair-input">
-            <input type="text" class="name" placeholder="Name 1" onkeypress="handleKeyPress(event, this)">
-            <input type="text" class="name" placeholder="Name 2" onkeypress="handleKeyPress(event, this)">
-            <input type="text" class="name" placeholder="Name 3 (optional)" onkeypress="handleKeyPress(event, this)">
+            <input type="text" class="name" placeholder="첫번째 사람" onkeypress="handleKeyPress(event, this)">
+            <input type="text" class="name" placeholder="두번째 사람" onkeypress="handleKeyPress(event, this)">
+            <input type="text" class="name" placeholder="세번째 사람 (옵션)" onkeypress="handleKeyPress(event, this)">
         </div>
     `;
     document.getElementById('seatingChart').innerHTML = '';
