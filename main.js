@@ -1,75 +1,125 @@
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
+        const defaultData = [
+            ['박준', '강희'],
+            ['고금', '이하', '정혜'],
+            ['구본', '왕한'],
+            ['김성', '손정'],
+            ['김준', '진성'],
+            ['문인', '육종'],
+            ['김서', '주시'],
+            ['김정', '조희'],
+            ['박윤', '최민'],
+            ['유호', '이호'],
+            ['홍', '황인']
+        ];
 
-function allocatePairs(pairs) {
-    const rows = 4;
-    const cols = 6; // 3 on each side of the aisle
-    let classroom = Array(rows).fill(null).map(() => Array(cols).fill(null));
+        const rows = 4;
+        const cols = 6;
 
-    // Shuffle the pairs to randomize seating
-    pairs = shuffleArray(pairs);
-
-    let currentRow = 0;
-    let currentCol = 0;
-
-    pairs.forEach(pair => {
-        if (pair.length > 3) {
-            throw new Error("Only pairs or triplets are allowed.");
+        function populateInputs() {
+            const inputContainer = document.getElementById('inputContainer');
+            inputContainer.innerHTML = '';
+            defaultData.forEach(pair => {
+                const newInput = document.createElement('div');
+                newInput.classList.add('pair-input');
+                newInput.innerHTML = `
+                    <input type="text" class="name" value="${pair[0]}">
+                    <input type="text" class="name" value="${pair[1]}">
+                    ${pair[2] ? `<input type="text" class="name" value="${pair[2]}">` : '<input type="text" class="name" placeholder="Name 3 (optional)">'}
+                `;
+                inputContainer.appendChild(newInput);
+            });
         }
 
-        let seatsNeeded = pair.length;
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
-        while (true) {
-            if (currentRow >= rows) {
-                currentRow = 0; // Start over from the top row
-                currentCol = 0;
+        function allocateSeating() {
+            let groups = [];
+            document.querySelectorAll('.pair-input').forEach(inputGroup => {
+                const group = Array.from(inputGroup.querySelectorAll('.name'))
+                                   .map(input => input.value.trim())
+                                   .filter(name => name.length > 0);
+
+                if (group.length > 0) {
+                    groups.push(group);
+                }
+            });
+
+            shuffleArray(groups);
+
+            let classroom = Array(rows).fill(null).map(() => Array(cols).fill(null));
+            let currentRow = 0;
+            let currentCol = 0;
+
+            function placeGroup(group) {
+                let seatsNeeded = group.length;
+                if (currentCol + seatsNeeded <= cols) {
+                    for (let i = 0; i < seatsNeeded; i++) {
+                        classroom[currentRow][currentCol++] = group[i];
+                    }
+                    return true;
+                }
+                return false;
             }
 
-            // Check if the pair/triplet can be placed in the current row without crossing the aisle
-            if (currentCol + seatsNeeded <= 3 || (currentCol >= 3 && currentCol + seatsNeeded <= cols)) {
-                // Place the pair or triplet side by side
-                for (let i = 0; i < pair.length; i++) {
-                    classroom[currentRow][currentCol++] = pair[i];
+            function fillRow() {
+                let skippedGroups = [];
+                while (groups.length > 0) {
+                    let group = groups.shift();
+                    if (!placeGroup(group)) {
+                        skippedGroups.push(group);
+                    }
                 }
+                groups = skippedGroups;
+            }
 
-                // If a triplet was placed, handle possible null space
-                if (pair.length === 3 && currentCol % 3 === 0) {
-                    currentCol++; // Skip to the next seat on the opposite side of the aisle
-                }
-
-                break; // Move to the next pair after placing
-            } else {
-                // If a triplet cannot be seated in the current row, skip to the next row
-                if (pair.length === 3 && currentCol + seatsNeeded > cols) {
+            function handleOverflow() {
+                while (currentRow < rows && groups.length > 0) {
+                    fillRow();
                     currentRow++;
                     currentCol = 0;
-                    continue;
                 }
-
-                // Move to the next row if there's not enough space in the current one
-                currentRow++;
-                currentCol = 0;
             }
+
+            fillRow();
+            handleOverflow();
+
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    if (!classroom[row][col]) {
+                        classroom[row][col] = '';
+                    }
+                }
+            }
+
+            displaySeating(classroom);
         }
-    });
 
-    return classroom;
-}
+        function displaySeating(classroom) {
+            const seatingChart = document.getElementById('seatingChart');
+            seatingChart.innerHTML = '';
 
-// Example usage:
-let pairs = [
-    ["Alice", "Bob"],
-    ["Charlie", "Dave"],
-    ["Eve", "Frank", "Grace"],
-    ["Heidi", "Ivan"],
-    ["Judy", "Mallory"]
-];
+            classroom.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.classList.add('row');
 
-let seating = allocatePairs(pairs);
+                row.forEach(seat => {
+                    const seatDiv = document.createElement('div');
+                    seatDiv.classList.add('seat');
+                    seatDiv.textContent = seat;
+                    if (!seat) {
+                        seatDiv.classList.add('empty');
+                    }
+                    rowDiv.appendChild(seatDiv);
+                });
 
-console.log(seating);
+                seatingChart.appendChild(rowDiv);
+            });
+        }
+
+        populateInputs();
