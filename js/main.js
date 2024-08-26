@@ -57,9 +57,9 @@ function addInput() {
     const newInput = document.createElement('div');
     newInput.classList.add('pair-input');
     newInput.innerHTML = `
-        <input type="text" class="name" placeholder="Name 1" onkeypress="handleKeyPress(event, this)">
-        <input type="text" class="name" placeholder="Name 2" onkeypress="handleKeyPress(event, this)">
-        <input type="text" class="name" placeholder="Name 3 (optional)" onkeypress="handleKeyPress(event, this)">
+        <input type="text" class="name" placeholder="첫번째 사람" onkeypress="handleKeyPress(event, this)">
+        <input type="text" class="name" placeholder="두번째 사람" onkeypress="handleKeyPress(event, this)">
+        <input type="text" class="name" placeholder="세번째 사람 (옵션)" onkeypress="handleKeyPress(event, this)">
     `;
     inputContainer.appendChild(newInput);
     
