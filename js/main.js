@@ -12,6 +12,13 @@ const defaultData = [
     ['홍', '황인']
 ];
 
+const pastelColors = [
+    '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', 
+    '#C2C2F0', '#D5AAFF', '#FFB2B2', '#FF9A9A', '#FF9EAA',
+    '#B3F5B3', '#F5B3B3', '#B3D9FF', '#D9B3FF', '#B3B3F5'
+];
+
+
 const rows = 4;
 const cols = 6;
 
@@ -82,13 +89,16 @@ function shuffleArray(array) {
 
 function allocateSeating() {
     let groups = [];
+    const groupColors = {};
+
     document.querySelectorAll('.pair-input').forEach(inputGroup => {
         const group = Array.from(inputGroup.querySelectorAll('.name'))
                            .map(input => input.value.trim())
                            .filter(name => name.length > 0);
 
         if (group.length > 0) {
-            groups.push(group);
+            const color = getNextColor();
+            groups.push({ names: group, color: color });  // Store color with group
         }
     });
 
@@ -99,10 +109,10 @@ function allocateSeating() {
     let currentCol = 0;
 
     function placeGroup(group) {
-        let seatsNeeded = group.length;
+        let seatsNeeded = group.names.length;
         if (currentCol + seatsNeeded <= cols) {
             for (let i = 0; i < seatsNeeded; i++) {
-                classroom[currentRow][currentCol++] = group[i];
+                classroom[currentRow][currentCol++] = { name: group.names[i], color: group.color };
             }
             return true;
         }
@@ -134,7 +144,7 @@ function allocateSeating() {
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
             if (!classroom[row][col]) {
-                classroom[row][col] = '';
+                classroom[row][col] = { name: '', color: '' };
             }
         }
     }
@@ -153,8 +163,9 @@ function displaySeating(classroom) {
         row.forEach((seat, colIndex) => {
             const seatDiv = document.createElement('div');
             seatDiv.classList.add('seat');
-            seatDiv.textContent = seat;
-            if (!seat) {
+            seatDiv.textContent = seat.name;
+            seatDiv.style.backgroundColor = seat.color;
+            if (!seat.name) {
                 seatDiv.classList.add('empty');
             }
             rowDiv.appendChild(seatDiv);
@@ -171,10 +182,21 @@ function displaySeating(classroom) {
     });
 }
 
+
+
 function initializeSeating() {
     let classroom = Array(rows).fill(null).map(() => Array(cols).fill(''));
     displaySeating(classroom);
 }
+
+let colorIndex = 0;
+
+function getNextColor() {
+    const color = pastelColors[colorIndex];
+    colorIndex = (colorIndex + 1) % pastelColors.length;
+    return color;
+}
+
 
 // populateInputs();
 initializeSeating();
