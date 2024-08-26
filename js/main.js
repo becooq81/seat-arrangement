@@ -86,7 +86,6 @@ function shuffleArray(array) {
     }
     return array;
 }
-
 function allocateSeating() {
     let groups = [];
     const groupColors = {};
@@ -98,7 +97,7 @@ function allocateSeating() {
 
         if (group.length > 0) {
             const color = getNextColor();
-            groups.push({ names: group, color: color });  // Store color with group
+            groups.push({ names: group, color: color });
         }
     });
 
@@ -183,7 +182,6 @@ function displaySeating(classroom) {
 }
 
 
-
 function initializeSeating() {
     let classroom = Array(rows).fill(null).map(() => Array(cols).fill(''));
     displaySeating(classroom);
@@ -198,5 +196,5 @@ function getNextColor() {
 }
 
 
-// populateInputs();
+populateInputs();
 initializeSeating();
