@@ -121,9 +121,16 @@
     <h1>Classroom Seating Allocation</h1>
 
     <div id="inputContainer">
+        <div class="pair-input">
+            <input type="text" class="name" placeholder="Name 1" onkeydown="handleKeyDown(event, this)">
+            <input type="text" class="name" placeholder="Name 2" onkeydown="handleKeyDown(event, this)">
+            <input type="text" class="name" placeholder="Name 3 (optional)" onkeydown="handleKeyDown(event, this)">
+        </div>
     </div>
 
     <button onclick="allocateSeating()">Allocate Seating</button>
+
+    <button onclick="resetInputs()">Reset</button>
 
     <div id="screen">Screen</div>
 
