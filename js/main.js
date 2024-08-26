@@ -1,17 +1,3 @@
-const defaultData = [
-    ['박준', '강희'],
-    ['고금', '이하', '정혜'],
-    ['구본', '왕한'],
-    ['김성', '손정'],
-    ['김준', '진성'],
-    ['문인', '육종'],
-    ['김서', '주시'],
-    ['김정', '조희'],
-    ['박윤', '최민'],
-    ['유호', '이호'],
-    ['홍', '황인']
-];
-
 const pastelColors = [
     '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', 
     '#C2C2F0', '#D5AAFF', '#FFB2B2', '#FF9A9A', '#FF9EAA',
@@ -196,5 +182,5 @@ function getNextColor() {
 }
 
 
-populateInputs();
+// populateInputs();
 initializeSeating();
