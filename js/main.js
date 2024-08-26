@@ -72,6 +72,19 @@ function shuffleArray(array) {
     }
     return array;
 }
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function shuffleNamesInGroup(group) {
+    return shuffleArray(group);
+}
+
 function allocateSeating() {
     let groups = [];
     const groupColors = {};
@@ -82,8 +95,9 @@ function allocateSeating() {
                            .filter(name => name.length > 0);
 
         if (group.length > 0) {
+            const shuffledGroup = shuffleNamesInGroup(group);
             const color = getNextColor();
-            groups.push({ names: group, color: color });
+            groups.push({ names: shuffledGroup, color: color });
         }
     });
 
