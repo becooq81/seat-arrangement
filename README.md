@@ -39,3 +39,8 @@ Just as you like!
 ## Customization
 - **Grid Dimensions**: Modify the rows and cols variables in script.js to change the grid size.
 - **Colors**: Customize the pastelColors array in script.js to change the colors used for the seat backgrounds.
+
+## Coming soon
+- **Greater Contrast for Grid colors**: To provide you with more vivid differences among pairs
+- **Right align triplets that appear on the right**
+##
