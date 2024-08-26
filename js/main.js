@@ -1,3 +1,4 @@
+
 const pastelColors = [
     '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', 
     '#C2C2F0', '#D5AAFF', '#FFB2B2', '#FF9A9A', '#FF9EAA',
