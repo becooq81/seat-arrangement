@@ -88,29 +88,44 @@
     <h1>Classroom Seating Allocation</h1>
 
     <div id="inputContainer">
-        <div class="pair-input">
-            <input type="text" class="name" placeholder="Name 1">
-            <input type="text" class="name" placeholder="Name 2">
-            <input type="text" class="name" placeholder="Name 3 (optional)">
-        </div>
+        <!-- Input fields will be populated by JavaScript -->
     </div>
 
-    <button onclick="addInput()">Add Another Pair/Triplet</button>
     <button onclick="allocateSeating()">Allocate Seating</button>
 
     <div id="seatingChart" class="seating-chart"></div>
 
     <script>
-        function addInput() {
+        const defaultData = [
+            ['박준', '강희'],
+            ['고금', '이하', '정혜'],
+            ['구본', '왕한'],
+            ['김성', '손정'],
+            ['김준', '진성'],
+            ['문인', '육종'],
+            ['김서', '주시'],
+            ['김정', '조희'],
+            ['박윤', '최민'],
+            ['유호', '이호'],
+            ['홍', '황인']
+        ];
+
+        const rows = 4;
+        const cols = 6;
+
+        function populateInputs() {
             const inputContainer = document.getElementById('inputContainer');
-            const newInput = document.createElement('div');
-            newInput.classList.add('pair-input');
-            newInput.innerHTML = `
-                <input type="text" class="name" placeholder="Name 1">
-                <input type="text" class="name" placeholder="Name 2">
-                <input type="text" class="name" placeholder="Name 3 (optional)">
-            `;
-            inputContainer.appendChild(newInput);
+            inputContainer.innerHTML = ''; // Clear existing inputs
+            defaultData.forEach(pair => {
+                const newInput = document.createElement('div');
+                newInput.classList.add('pair-input');
+                newInput.innerHTML = `
+                    <input type="text" class="name" value="${pair[0]}">
+                    <input type="text" class="name" value="${pair[1]}">
+                    ${pair[2] ? `<input type="text" class="name" value="${pair[2]}">` : '<input type="text" class="name" placeholder="Name 3 (optional)">'}
+                `;
+                inputContainer.appendChild(newInput);
+            });
         }
 
         function shuffleArray(array) {
@@ -120,30 +135,25 @@
             }
             return array;
         }
+
         function allocateSeating() {
-            let pairs = [];
-            // Collect pairs and triplets from the input fields
+            let groups = [];
             document.querySelectorAll('.pair-input').forEach(inputGroup => {
-                const pair = Array.from(inputGroup.querySelectorAll('.name'))
-                                  .map(input => input.value.trim())
-                                  .filter(name => name.length > 0);
-        
-                if (pair.length > 1 && pair.length <= 3) {
-                    pairs.push(pair);
+                const group = Array.from(inputGroup.querySelectorAll('.name'))
+                                   .map(input => input.value.trim())
+                                   .filter(name => name.length > 0);
+
+                if (group.length > 0) {
+                    groups.push(group);
                 }
             });
-        
-            const rows = 4;
-            const cols = 6;
+
+            shuffleArray(groups);
+
             let classroom = Array(rows).fill(null).map(() => Array(cols).fill(null));
-        
-            // Shuffle pairs for random seating
-            shuffleArray(pairs);
-        
             let currentRow = 0;
             let currentCol = 0;
-        
-            // Helper function to place a group in the classroom
+
             function placeGroup(group) {
                 let seatsNeeded = group.length;
                 if (currentCol + seatsNeeded <= cols) {
@@ -154,68 +164,40 @@
                 }
                 return false;
             }
-        
-            // Function to find and place a pair in the current row
-            function placePairIfNeeded() {
-                let twoPersonPair = pairs.find(p => p.length === 2);
-                if (twoPersonPair) {
-                    if (placeGroup(twoPersonPair)) {
-                        pairs = pairs.filter(p => p !== twoPersonPair); // Remove the placed pair
-                        return true;
+
+            function fillRow() {
+                let skippedGroups = [];
+                while (groups.length > 0) {
+                    let group = groups.shift();
+                    if (!placeGroup(group)) {
+                        skippedGroups.push(group);
                     }
                 }
-                return false;
+                groups = skippedGroups;
             }
-        
-            while (pairs.length > 0 && currentRow < rows) {
-                let group = pairs.shift(); // Get the next pair or triplet
-                if (group.length === 3 && !placeGroup(group)) {
-                    // If a triplet doesn't fit, try placing pairs to make space
-                    if (placePairIfNeeded()) {
-                        // Retry placing the triplet after placing the pair
-                        if (placeGroup(group)) {
-                            continue; // Continue with the next group if successful
-                        }
-                    }
-        
-                    // Move to the next row if triplet still cannot fit
+
+            function handleOverflow() {
+                while (currentRow < rows && groups.length > 0) {
+                    fillRow();
                     currentRow++;
                     currentCol = 0;
-                    if (currentRow >= rows) {
-                        break; // Stop if there are no more rows available
-                    }
-        
-                    // Try placing the triplet in the new row
-                    if (!placeGroup(group)) {
-                        // If still cannot place, try placing pairs in the new row
-                        placePairIfNeeded(); // Try placing a pair if needed
-                        placeGroup(group); // Attempt to place the triplet again
-                    }
-                } else {
-                    // If the group is a pair or triplet that fits, place it directly
-                    if (!placeGroup(group)) {
-                        // Move to the next row if it cannot fit in the current row
-                        currentRow++;
-                        currentCol = 0;
-                        if (currentRow >= rows) {
-                            break; // Stop if there are no more rows available
-                        }
-        
-                        // Try placing the group in the new row
-                        if (!placeGroup(group)) {
-                            // If it still cannot fit, continue with the next row
-                            continue;
-                        }
+                }
+            }
+
+            fillRow();
+            handleOverflow();
+
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    if (!classroom[row][col]) {
+                        classroom[row][col] = '';
                     }
                 }
             }
-        
+
             displaySeating(classroom);
         }
-        
-        
-        
-        
+
         function displaySeating(classroom) {
             const seatingChart = document.getElementById('seatingChart');
             seatingChart.innerHTML = '';
@@ -227,7 +209,7 @@
                 row.forEach(seat => {
                     const seatDiv = document.createElement('div');
                     seatDiv.classList.add('seat');
-                    seatDiv.textContent = seat ? seat : '';
+                    seatDiv.textContent = seat;
                     if (!seat) {
                         seatDiv.classList.add('empty');
                     }
@@ -237,6 +219,8 @@
                 seatingChart.appendChild(rowDiv);
             });
         }
+
+        populateInputs();
     </script>
 
 </body>
