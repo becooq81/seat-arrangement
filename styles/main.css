@@ -215,6 +215,12 @@ textarea::placeholder {
     color: #888;
 }
 
+textarea {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
 .menu-bar {
     position: fixed;
     top: 0;
