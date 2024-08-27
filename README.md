@@ -10,9 +10,10 @@ You can access the live version of the app [here](https://github.com/becooq81/se
 
 ## Features
 
-- **Input Management**: Easily add, edit, or remove pairs and triplets of student names.
+- **Input Management**: Easily add, edit, or remove pairs and triplets of student names using text inputs or a textarea. This feature allows you to input groups of names separated by line breaks, commas, or whitespace.
 - **Shuffling**: Randomly shuffle student groups to ensure a varied seating arrangement.
 - **Customizable Grid**: Adjust the grid dimensions for seating arrangement (default is 4 rows by 6 columns).
+- **Textarea Input**: Input student names in bulk using a textarea where groups are divided by line breaks and names within groups are separated by commas or whitespace. This method simplifies bulk entry and management of student names.
 
 ## Make your own version
 1. **Clone the Repository**
