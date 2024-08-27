@@ -111,7 +111,11 @@ function allocateSeating() {
     function placeGroup(group) {
         let seatsNeeded = group.names.length;
         if (currentCol + seatsNeeded <= cols) {
+            if (currentCol === 2 && seatsNeeded === 3) {
+                currentCol++;
+            }
             for (let i = 0; i < seatsNeeded; i++) {
+                
                 classroom[currentRow][currentCol++] = { name: group.names[i], color: group.color };
             }
             return true;
