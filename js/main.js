@@ -115,7 +115,6 @@ function allocateSeating() {
                 currentCol++;
             }
             for (let i = 0; i < seatsNeeded; i++) {
-                
                 classroom[currentRow][currentCol++] = { name: group.names[i], color: group.color };
             }
             return true;
