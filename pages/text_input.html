@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <title>10사기 14반! 자리 배치</title>
+
+</head>
+<body>
+
+    <h1>10사기 14반! 이번 달은 어디에 앉을까요~?</h1>
+
+    <div id="text-area-container">
+        <textarea id="input-text-area" placeholder="이름을 입력하세요. 이름은 쉼표 또는 띄어쓰기로 구분해주세요. 페어는 엔터로 구분해주세요."></textarea>
+    </div>
+
+    <div class="button-container">
+        <button onclick="allocateSeating()">자리 섞기</button>
+        <button onclick="resetInputs()">초기화</button>
+    </div>
+
+    <div id="screen">스크린</div>
+
+    <div id="seating-chart">
+    </div>
+
+    <script src="/js/text_input.js" type="text/javascript"></script>
+</body>
+</html>

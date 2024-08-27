@@ -139,7 +139,7 @@ button:hover {
     box-sizing: border-box;
 }
 
-#seatingChart {
+#seating-chart {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -192,4 +192,25 @@ button:hover {
 
 .aisle-right {
     left: calc(50% + 58px); 
+}
+
+#input-text-area {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+textarea::placeholder {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #888;
 }

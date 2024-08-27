@@ -10,7 +10,7 @@ const rows = 4;
 const cols = 6;
 
 function populateInputs() {
-    const inputContainer = document.getElementById('inputContainer');
+    const inputContainer = document.getElementById('input-container');
     inputContainer.innerHTML = '';
     defaultData.forEach(pair => {
         const newInput = document.createElement('div');
@@ -26,7 +26,7 @@ function populateInputs() {
 
 
 function resetInputs() {
-    document.getElementById('inputContainer').innerHTML = `
+    document.getElementById('input-container').innerHTML = `
         <div class="pair-input">
             <input type="text" class="name" placeholder="첫번째 사람" onkeypress="handleKeyPress(event, this)">
             <input type="text" class="name" placeholder="두번째 사람" onkeypress="handleKeyPress(event, this)">
@@ -53,7 +53,7 @@ function handleKeyPress(event, input) {
 }
 
 function addInput() {
-    const inputContainer = document.getElementById('inputContainer');
+    const inputContainer = document.getElementById('input-container');
     const newInput = document.createElement('div');
     newInput.classList.add('pair-input');
     newInput.innerHTML = `
@@ -153,7 +153,7 @@ function allocateSeating() {
 }
 
 function displaySeating(classroom) {
-    const seatingChart = document.getElementById('seatingChart');
+    const seatingChart = document.getElementById('seating-chart');
     seatingChart.innerHTML = '';
 
     classroom.forEach((row, rowIndex) => {
