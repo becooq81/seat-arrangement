@@ -1,5 +1,7 @@
 # Seating Arrangement Web App
 
+I created this website in order to facilitate random seat assignment @ SSAFY 12th. Email me (becooq81@gmail.com) for any feedback or inquiries. Enjoy!
+
 ## Overview
 
 This web application helps to arrange students into pairs or triplets and display their seating arrangement in a grid format. It includes features for inputting student names, shuffling them into groups, and displaying the results with a visual blinking effect.
